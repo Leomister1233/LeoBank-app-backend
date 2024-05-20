@@ -24,10 +24,10 @@ const app = express();
 dotenv.config();
 
 const db=mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Slaves123#',
-    database:'bank'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database:process.env.DB_DATABASE
 })
 app.use(cors())
 app.use(express.json())//important for sending data
@@ -42,7 +42,7 @@ app.use(cookieParser());
 
 const MongoDBStoreInstance = MongoDBSession(session);
 
-const mongoURI= 'mongodb://localhost:27017/Sessions'
+const mongoURI= process.env.Mongo_URI
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('MongoDB connected successfully');
@@ -91,7 +91,7 @@ const store = new MongoDBStoreInstance({
 
 app.use(
     session({
-        secret: 'slaves123#',
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
         rolling: false,
